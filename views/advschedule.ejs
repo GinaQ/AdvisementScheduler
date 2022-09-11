@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>  
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/studentAccount">My Account<My Account></a>
+        <% if (!(student.advstatus == "Complete" || student.advstatus == "Scheduled")) {%>
+            <a class="nav-link active" href="/advschedule">New Advisement</a>
+        <% } %>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <div>
+            <h3 class="h3">Dr. Hong Sung’s Advisement Schedule</h3><br>
+            <p><mark>Meetings are first come first serve and schedule is subject to change.</mark></p><br>
+            <div class="container">
+                <div class='col-md-4'>
+                <table class="table">
+                    <tbody>                      
+                        <% for (const schedule of results) { %>
+                            <tr>
+                                <td><%= schedule.start_date.toLocaleString("en-US") %></td>
+                                <td>
+                                    <form action="/advSignup" method="post">
+                                        <input type="hidden" name="studentid" id="studentid" value="<%= student._id %>">
+                                        <input type='hidden' name='scheduleid' id='scheduleid' value='<%= schedule._id %>'>
+                                        <button type="submit" class="btn btn-primary">SignUp</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include ('./partials/footer') %>
+<%- include ('./partials/scripts') %>                  
+</h:body>
+</html>

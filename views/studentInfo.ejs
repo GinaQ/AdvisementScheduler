@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/header') %>
+
+<head><title>Advisement</title></head>
+
+<body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                <a class="nav-link" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/scheduler">Schedule</a>
+        <a class="nav-link" href="/meetings">Meetings</a>
+        <a class="nav-link" href="/allStudents">Student Accounts</a>
+    </nav>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2><br>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>  
+                </div>
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mr-2" role="group">
+                <form action='/edit' method='post'>
+                    <input type='hidden' name='id' value='<%=student._id %>'>
+                    <button type='submit' class='btn btn-primary'>Edit Account Info</button>
+                </form>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                <form action="/remove" method="get">
+                    <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p></p><br>
+                    <h3 class="h3"><%=student.firstname %> <%=student.lastname %></h3>
+                    <p></p>       
+                    <div>
+                        <b>Email: </b><%= stuuser.email %>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <div>
+                <% if (!stuuser.student) { %>
+                    <p>No student info on file.</p>
+                    <a class="nav-link" href="/editStudentAccount">Add Student Info</a>
+                <% } else { %>
+
+                <p><b>UCO ID: </b><%= student.ucoid %></p>
+                <p><b>First Name: </b><%= student.firstname %></p>
+                <p><b>Last Name: </b><%= student.lastname %></p>
+                <p><b>Phone: </b><%= student.phone %></p>
+                <p><b>Major: </b><%= student.major %></p>
+                <p><b>Last Updated: </b><%= student.updated %></p>
+                <p><b>Advisement History: </b>
+                <div class="col-md-8">
+                    <% if(student.advisementhistory) { %>
+                    <table class="table">
+                        <tbody>
+                            <%  for(const schedule of results) { %>
+                            <tr>
+                                <td><%= schedule.start_date.toLocaleString("en-US"  ) %></td>
+                                <td>
+                                    <form action="/advHistory" method="get">
+                                    <input type="hidden" name="studentid" id="studentid" value="<%= student._id %>">
+                                    <input type="hidden" name="scheduleid" id="scheduleid" value="<%= schedule._id %>">
+                                    <button type="submit" class="btn btn-primary">View</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <% } %>
+                </div>
+                <p><b>Documents: </b>   
+                    <%= student.documents %></p>
+                
+                <p><b>My Notes:</b></p>
+                <div class="col-md-8">
+                    <% if(student.notes) { %>
+                    <table class="table">
+                        <tbody>
+                            <% for (const notes of student.notes) { %>
+                            <tr>
+                                <td><%= notes.date.toLocaleString("en-US") %></td>
+                                <td><%= notes.text %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <% } %>
+                </div>
+                <form name='notesform' action="/addNote" method="post">
+                    <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                    <div class="form-group-row">
+                        <label for="text" class="col-sm-2  col-form-label">Add New Note: </label>
+                        <div class="col-sm-4">
+                            <textarea class="form-control" id="text" type="String" name="text" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <br><br><button type="submit" class="btn btn-primary">Save Note</button>
+                </form>
+                    
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/header') %>
+
+<head><title>Advisement</title></head>
+
+<body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link active" href="/studentAccount">My Account<My Account></a>
+        <% if (user.student) { %>
+            <% if (!(student.advstatus == "Complete" || student.advstatus == "Scheduled")) {%>
+                <a class="nav-link" href="/advschedule">New Advisement</a>
+            <% } %>
+        <% } %>
+    </nav>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p></p><br>
+                    <h3 class="h3"><%= user.student? student.firstname : '' %> <%=user.student? student.lastname : '' %></h3>
+                    <p></p>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>            
+                    <div>
+                        <p><b>Email: </b><%= user.email %></p><br> 
+                    </div>
+                </div>
+            </div>
+            <h4 class'h4'>Student Account Info</h4>
+            <p></p>
+            <div>
+                <% if (!user.student) { %>
+                    <p>No student info on file. You must add your student info to schedule an advisement meeting.</p>
+                    <a class="nav-link" href="/editStudentAccount">Add Student Info</a>
+                <% } else { %>
+                    <p><b>UCO ID: </b><%= student.ucoid %></p>
+                    <p><b>First Name: </b><%= student.firstname %></p>
+                    <p><b>Last Name: </b><%= student.lastname %></p>
+                    <p><b>Phone: </b><%= student.phone %></p>
+                    <p><b>Major: </b><%= student.major %></p>
+                    <p><b>Last Updated: </b><%= student.updated %></p>
+                    <p><b>Advisement History: </b>
+                    <div class="col-md-8">
+                        <% if(student.advisementhistory) { %>
+                        <table class="table">
+                            <tbody>
+                                <%  for(const schedule of results) { %>
+                                <tr>
+                                    <td><%= schedule.start_date.toLocaleString("en-US"  ) %></td>
+                                    <td>
+                                        <form action="/myCurrentAdv" method="get">
+                                        <input type="hidden" name="studentid" id="studentid" value="<%= student._id %>">
+                                        <input type="hidden" name="scheduleid" id="scheduleid" value="<%= schedule._id %>">
+                                        <button type="submit" class="btn btn-primary">View</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } %>
+                    </div>
+                    <p><b>Documents: </b>   
+                        <%= student.documents %></p>
+                    <div>
+                        <form action='/editStudentAccount' method='get'>
+                            <input type='hidden' name='user' value='<%=user %>'>
+                            <input type='hidden' name='student' value='<%=student %>'>
+                            <br><br>
+                            <button type='submit' class='btn btn-primary'>Edit Account Info</button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('./partials/footer') %>
+<%- include ('./partials/scripts') %> 
+</body>
+</html>

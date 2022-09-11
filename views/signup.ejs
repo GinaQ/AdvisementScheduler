@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="/../images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-heigth">
+            <% if (messageerror && messageerror.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    Sign Up Error: <%= messageerror %>
+                </div>
+            <% } %>
+            <% if (messagesuccess && messagesuccess.length > 0) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= messagesuccess %>
+                </div>
+            <% } %>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p></p><br>
+                    <h3 class="h3">Your address: <%=req.params.email %> has been verified. Please add a password for your account.</h3>
+                    <p></p><br>
+                    <div class='col-md-8'>
+                    <form name="signupform" action="/signup/<%=req.params.token %>/<%=req.params.email %>" method="post" onsubmit="return validateForm()">
+                        <input type="hidden" name = "email" class="form-control" id="email" value='<%= email %>'>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" name="password" class="form-control" id="password" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="confirm" class="col-sm-2 col-form-label">Confirm Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" name="confirm" class="form-control" id="confirm">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %>                
+</body>
+<script>
+    function validateForm() {
+        const email = document.forms["signupform"]["email"].value;
+            // if (email.indexOf('uco.edu') < 0) {
+            //     alert("Use UCO Email only");
+            //     //return false;
+            //     return true;
+            // }
+        const password = document.forms["signupform"]["password"].value;
+        const confirm = document.forms["signupform"]["confirm"].value;
+        if (password.length < 4) {
+            alert("password must have at least 4 chars");
+            return false;
+        }
+        if(password != confirm){
+            alert('passwords do not match');
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>

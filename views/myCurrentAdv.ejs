@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/studentAccount">My Account<My Account></a>
+        <% if (!(student.advstatus == "Complete" || student.advstatus == "Scheduled")) {%>
+            <a class="nav-link" href="/advschedule">New Advisement</a>
+        <% } %>
+    </nav>
+    <div class="container-fluid">
+        <br><h3><%= student.firstname %> <%=student.lastname%></h3>
+        <br><h4>Advisement Meeting 
+                <%= schedule.start_date%></h4>
+        <p><b>Email: </b><%= user.email %></p>
+        <p><b>Phone: </b><%= student.phone %></p>
+        <p><b>UCO ID: </b><%= student.ucoid %></p>
+        <p><b>Major: </b><%= student.major %></p>
+        <p><b>Pre-Advisement Questions: </b><%= schedule.questions %></p>
+        <p><b>Proposed Courses: </b></p>
+        <div class="col-md-8">
+            <table class="table">
+                <tbody>
+                    <%  for(const record of schedule.proposed_schedule) { %>
+                    <tr>
+                        <td><%= record.prefix %></td>
+                        <td><%= record.course_number %></td>
+                        <td><%= record.crn %></td>
+                        <td><%= record.title %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</body>   
+</html>

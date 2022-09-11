@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+
+            <div class="navbar-header">
+                <br>
+                <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+                <span class="icon-bar"></span>
+            </div>
+
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>
+                    <% if (messageerror && messageerror.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            Sign Up Error: <%= messageerror %>
+                        </div>
+                    <% } %>
+                    <% if (messagesuccess && messagesuccess.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= messagesuccess %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div>
+                        <p>Please log in to access the full site</p>
+                        <a class="nav-link " href="/facultyLogin">Faculty Advisor Login</a>
+                        <a class="nav-link " href="/login">Student Login</a>
+                        <a class="nav-link " href="/emailValidation">Create Account</a><br>
+                        <h3 class="h3">Students</h3>
+                    </div>
+                </div>
+                <div class='col-md-12'>
+                    Advisement meetings are required each semester for the following majors:
+                    <ul>
+                        <li>Computer Science</li>
+                        <li>Computer Science - Applied</li>
+                        <li>Computer Science - Information Science</li>
+                        <li>Software Engineering</li>
+                    </ul>
+                    <p>
+                    To schedule your advisement meeting, create an account and sign up for one of the 
+                    available time slots below. Have your proposed class schedule for the upcoming semester 
+                    ready, in addition to preliminary questions for your advisor.</p><br>
+                </div>
+            </div>
+            <div >
+                <h3 class="h3">Dr. Hong Sung Advisement Schedule</h3>
+                <p>Meetings are first come first serve and schedule is subject to change. Please log in 
+                    to sign up for a meeting.</p><br>
+                <table class="table">
+                    <tbody>                      
+                        <% for (const schedule of results) { %>
+                            <tr>
+                                <td><%= schedule.start_date.toLocaleString("en-US") %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<%- include ('./partials/footer') %>
+<%- include ('./partials/scripts') %> 
+</h:body>
+</html>

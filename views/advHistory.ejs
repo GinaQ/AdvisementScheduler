@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/scheduler">Schedule</a>
+        <a class="nav-link" href="/meetings">Meetings</a>
+        <a class="nav-link" href="/allStudents">Student Accounts</a>
+    </nav>
+
+    </div>
+    <div class="container-fluid">
+        <br><h3><%= student.firstname %> <%=student.lastname%></h3>
+        <br><h4>Advisement Meeting 
+            <%= schedule.start_date.toLocaleString("en-US", {weekday:'long', month:'long', day:'numeric', year:'numeric', hour:'numeric', minute:'numeric' })%></h4>
+        
+        <p><b>Email: </b><%= user.email %></p>
+        <p><b>Phone: </b><%= student.phone %></p>
+        <p><b>UCO ID: </b><%= student.ucoid %></p>
+        <p><b>Major: </b><%= student.major %></p>
+        <p><b>Pre-Advisement Questions: </b><%= schedule.questions %></p>
+        <p><b>Proposed Courses: </b></p>
+        <div class="col-md-8">
+            <table class="table">
+                <tbody>
+                    <%  for(const record of schedule.proposed_schedule) { %>
+                    <tr>
+                        <td><%= record.prefix %></td>
+                        <td><%= record.course_number %></td>
+                        <td><%= record.crn %></td>
+                        <td><%= record.title %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <br>
+        </div>
+            <form action="/saveStatus" method="post">
+                <input type="hidden" name="studentid" id="id" value="<%= student._id %>">
+                <input type="hidden" name="scheduleid" id="id" value="<%= schedule._id %>">
+                <div class="row container-fluid">
+                    <br><br><p><b>Status: </b></p>
+                    <div class="radio col-sm-2">
+                        <label><input type="radio" name="statusRadio" id="scheduled" value="Scheduled" <%= schedule.adv_status=="Scheduled"? 'checked' :'!checked' %> > Scheduled</label>
+                    </div>
+                    <div class="radio col-sm-2">
+                        <label><input type="radio" name="statusRadio" id="complete" value="Complete" <%= schedule.adv_status=="Complete"? 'checked' :'!checked' %>> Complete</label>
+                    </div>
+                    <div class="radio col-sm-2">
+                        <label><input type="radio" name="statusRadio" id="canceled" value="Canceled" <%= schedule.adv_status=="Canceled"? 'checked' :'!checked' %>> Canceled</label>
+                    </div>
+                    <div class="radio col-sm-2">
+                        <label><input type="radio" name="statusRadio" id="noshow" value="No Show" <%= schedule.adv_status=="No Show"? 'checked' :'!checked' %>> No Show</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+            
+            <br><p><b>My Notes:</b></p>
+            <div class="col-md-8">
+                <% if(student.notes) { %>
+                <table class="table">
+                    <tbody>
+                        <% for (const notes of student.notes) { %>
+                        <tr>
+                            <td><%= notes.date.toLocaleString("en-US") %></td>
+                            <td><%= notes.text %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } %>
+            </div>
+            <form name='notesform' action="/addNote" method="post">
+                <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                <div class="form-group-row">
+                    <label for="text" class="col-sm-2  col-form-label">Add New Note: </label>
+                    <div class="col-sm-4">
+                        <textarea class="form-control" id="text" type="String" name="text" rows="4"></textarea>
+                    </div>
+                </div>
+                <br><br><button type="submit" class="btn btn-primary">Save Note</button>
+            </form>
+    </div>
+<%- include ('./partials/footer') %>
+<%- include ('./partials/scripts') %> 
+</body>   
+</html>

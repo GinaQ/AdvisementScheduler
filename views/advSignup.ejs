@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/studentAccount">My Account<My Account></a>
+        <% if (!(student.advstatus == "Complete" || student.advstatus == "Scheduled")) {%>
+            <a class="nav-link" href="/advschedule">New Advisement</a>
+        <% } %>
+    </nav>
+    </div>
+    <div class="container-fluid">
+        <br><h3>Advisement Meeting 
+            <%= schedule.start_date.toLocaleString("en-US", {weekday:'long', month:'long', day:'numeric', year:'numeric', hour:'numeric', minute:'numeric' }) %></h3>
+            <br><h4><%= user.student? student.firstname : '' %> <%=user.student? student.lastname : '' %></h4>
+            <p><b>Email: </b><%= user.email %></p>
+            <p><b>Phone: </b><%= student.phone %></p>
+            <p><b>UCO ID: </b><%= student.ucoid %></p>
+    </div>
+    <div class="container-fluid">
+        <form name="advSignup" action="/advCompleteSignup" method="post" onsubmit='return validateForm()'>
+            <div class="row">
+                <div class="col">
+                    <input type="hidden" name="studentid" id="studentid" value="<%= student._id %>">
+                    <input type="hidden" name="scheduleid" id="scheduleid" value="<%= schedule._id %>">
+                    <p><b>Degree Plan:</b></p>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="majorRadio" id="6100" value="CS6100" <%= student.major=="Computer Science"? 'checked' :'!checked' %>>
+                            Computer Science (6100)
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="majorRadio" id="6101" value="CS6101" <%= student.major=="Computer Science - Applied"? 'checked' :'!checked'%>>
+                            Computer Science - Applied (6101)
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="majorRadio" id="6102" value="CS6102" <%= student.major=="Computer Science - Information Science"? 'checked' :'!checked' %>>
+                            Computer Science - Information Science (6102)
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="majorRadio" id="6110" value="SE6110" <%= student.major=="Software Engineering"? 'checked' :'!checked' %>>
+                            Software Engineering (6110)
+                        </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <p><b>Type of Meeting: </b></p>
+                    Would you like to meet in person, or via Skype? Dr. Sung's Skype ID: profsung@hotmail.com. Dr. Sung will start Skype.
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="skypeRadio" id="inperson" value="inperson" checked>
+                            In-person
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="skypeRadio" id="skype" value="skype">
+                            Skype (Enter Skype ID below)
+                            <label class="sr-only" for="skypeID">Skype ID</label>
+                            <input type="text" class="form-control" name="skypeID" id="skypeID" placeholder="Skype ID"> 
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br><b>Schedule <em>(List CS, SE, Math, and Science courses only)</em></b><br>
+            <div class="row">
+                <div class="col col-sm-2">
+                    Semester
+                </div>
+                <div class="col col-sm-2">
+                    Course Prefix
+                </div>
+                <div class="col col-sm-2">
+                    Course Number
+                </div>
+                <div class="col col-sm-2">
+                    CRN
+                </div>
+                <div class="col col-md-4">
+                    Course Title
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S1">Semester</label>
+                    <input type="text" class="form-control" name="S1" id="S1" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P1">Course Prefix</label>
+                    <input type="text" class="form-control" name="P1" id="P1" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N1">Course Number</label>
+                    <input type="text" class="form-control" name="N1" id="N1">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN1">CRN</label>
+                    <input type="text" class="form-control" name="CRN1" id="CRN1">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T1">Title</label>
+                    <input type="text" class="form-control" name="T1" id="T1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S2">Semester</label>
+                    <input type="text" class="form-control" name="S2" id="S2" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P2">Course Prefix</label>
+                    <input type="text" class="form-control" name="P2" id="P2" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N2">Course Number</label>
+                    <input type="text" class="form-control" name="N2" id="N2">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN2">CRN</label>
+                    <input type="text" class="form-control" name="CRN2" id="CRN2">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T2">Title</label>
+                    <input type="text" class="form-control" name="T2" id="T2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S3">Semester</label>
+                    <input type="text" class="form-control" name="S3" id="S3" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P3">Course Prefix</label>
+                    <input type="text" class="form-control" name="P3" id="P3" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N3">Course Number</label>
+                    <input type="text" class="form-control" name="N3" id="N3">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN3">CRN</label>
+                    <input type="text" class="form-control" name="CRN3" id="CRN3">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T3">Title</label>
+                    <input type="text" class="form-control" name="T3" id="T3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S4">Semester</label>
+                    <input type="text" class="form-control" name="S4" id="S4" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P4">Course Prefix</label>
+                    <input type="text" class="form-control" name="P4" id="P4" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N4">Course Number</label>
+                    <input type="text" class="form-control" name="N4" id="N4">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN4">CRN</label>
+                    <input type="text" class="form-control" name="CRN4" id="CRN4">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T4">Title</label>
+                    <input type="text" class="form-control" name="T4" id="T4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S5">Semester</label>
+                    <input type="text" class="form-control" name="S5" id="S5" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P5">Course Prefix</label>
+                    <input type="text" class="form-control" name="P5" id="P5" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N5">Course Number</label>
+                    <input type="text" class="form-control" name="N5" id="N5">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN5">CRN</label>
+                    <input type="text" class="form-control" name="CRN5" id="CRN5">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T5">Title</label>
+                    <input type="text" class="form-control" name="T5" id="T5">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S6">Semester</label>
+                    <input type="text" class="form-control" name="S6" id="S6" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P6">Course Prefix</label>
+                    <input type="text" class="form-control" name="P6" id="P6" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N6">Course Number</label>
+                    <input type="text" class="form-control" name="N6" id="N6">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN6">CRN</label>
+                    <input type="text" class="form-control" name="CRN6" id="CRN6">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T6">Title</label>
+                    <input type="text" class="form-control" name="T6" id="T6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S7">Semester</label>
+                    <input type="text" class="form-control" name="S7" id="S7" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P7">Course Prefix</label>
+                    <input type="text" class="form-control" name="P7" id="P7" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N7">Course Number</label>
+                    <input type="text" class="form-control" name="N7" id="N7">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN7">CRN</label>
+                    <input type="text" class="form-control" name="CRN7" id="CRN7">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T7">Title</label>
+                    <input type="text" class="form-control" name="T7" id="T7">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="S8">Semester</label>
+                    <input type="text" class="form-control" name="S8" id="S8" placeholder="Summer/Fall/Spring">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="P8">Course Prefix</label>
+                    <input type="text" class="form-control" name="P8" id="P8" placeholder="e.g., CMSC, STAT">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="N8">Course Number</label>
+                    <input type="text" class="form-control" name="N8" id="N8">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label class="sr-only" for="CRN8">CRN</label>
+                    <input type="text" class="form-control" name="CRN8" id="CRN8">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="sr-only" for="T8">Title</label>
+                    <input type="text" class="form-control" name="T8" id="T8">
+                </div>
+            </div>
+            <br>
+            <b><label for="question">Pre-advisement question(s) for your advisor (optional):</label></b>
+            <textarea class="form-control" type="String" rows="3" name="question" id="question"></textarea>
+            <br>
+            <button type='submit' class='btn btn-primary'>Schedule Meeting</button>
+        </form>
+
+    </div>
+
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %>                   
+</h:body>
+<script>
+    function validateForm() {
+        const skype = document.forms["advSignup"]["skype"];
+        const skypeID = document.forms["advSignup"]["skypeID"].value;
+        if (skype.checked) {
+            if (skypeID.length < 1){
+                alert("You must provide your Skype ID to request a Skype Meeting");
+                return false;
+            }
+        }
+        const S1 = document.forms["advSignup"]["S1"].value;
+        const S2 = document.forms["advSignup"]["S2"].value;
+        const S3 = document.forms["advSignup"]["S3"].value;
+        const S4 = document.forms["advSignup"]["S4"].value;
+        const S5 = document.forms["advSignup"]["S5"].value;
+        const S6 = document.forms["advSignup"]["S6"].value;
+        const S7 = document.forms["advSignup"]["S7"].value;
+        const S8 = document.forms["advSignup"]["S8"].value;
+        const P1 = document.forms["advSignup"]["P1"].value;
+        const P2 = document.forms["advSignup"]["P2"].value;
+        const P3 = document.forms["advSignup"]["P3"].value;
+        const P4 = document.forms["advSignup"]["P4"].value;
+        const P5 = document.forms["advSignup"]["P5"].value;
+        const P6 = document.forms["advSignup"]["P6"].value;
+        const P7 = document.forms["advSignup"]["P7"].value;
+        const P8 = document.forms["advSignup"]["P8"].value;
+        const N1 = document.forms["advSignup"]["N1"].value;
+        const N2 = document.forms["advSignup"]["N2"].value;
+        const N3 = document.forms["advSignup"]["N3"].value;
+        const N4 = document.forms["advSignup"]["N4"].value;
+        const N5 = document.forms["advSignup"]["N5"].value;
+        const N6 = document.forms["advSignup"]["N6"].value;
+        const N7 = document.forms["advSignup"]["N7"].value;
+        const N8 = document.forms["advSignup"]["N8"].value;
+        const CRN1 = document.forms["advSignup"]["CRN1"].value;
+        const CRN2 = document.forms["advSignup"]["CRN2"].value;
+        const CRN3 = document.forms["advSignup"]["CRN3"].value;
+        const CRN4 = document.forms["advSignup"]["CRN4"].value;
+        const CRN5 = document.forms["advSignup"]["CRN5"].value;
+        const CRN6 = document.forms["advSignup"]["CRN6"].value;
+        const CRN7 = document.forms["advSignup"]["CRN7"].value;
+        const CRN8 = document.forms["advSignup"]["CRN8"].value;
+        const T1 = document.forms["advSignup"]["T1"].value;
+        const T2 = document.forms["advSignup"]["T2"].value;
+        const T3 = document.forms["advSignup"]["T3"].value;
+        const T4 = document.forms["advSignup"]["T4"].value;
+        const T5 = document.forms["advSignup"]["T5"].value;
+        const T6 = document.forms["advSignup"]["T6"].value;
+        const T7 = document.forms["advSignup"]["T7"].value;
+        const T8 = document.forms["advSignup"]["T8"].value;
+        if(N1.length < 1){
+            alert("You must add your proposed courses.");
+            return false;
+        }
+        if((S1.length >0 || P1.length >0 || N1.length > 0 || CRN1.length >0 || T1.length >0) && 
+          (S1.length <1 || P1.length <1 || N1.length <1 || CRN1.length <1 || T1.length <1)){
+            alert("You must complete all fields for the 1st proposed class.");
+            return false;
+        }
+        if((S2.length >0 || P2.length >0 || N2.length > 0 || CRN2.length >0 || T2.length >0) && 
+          (S2.length <1 || P2.length <1 || N2.length <1 || CRN2.length <1 || T2.length <1)){
+            alert("You must complete all fields for the 2nd proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S3.length >0 || P3.length >0 || N3.length > 0 || CRN3.length >0 || T3.length >0) && 
+          (S3.length <1 || P3.length <1 || N3.length <1 || CRN3.length <1 || T3.length <1)){
+            alert("You must complete all fields for the 3rd proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S4.length >0 || P4.length >0 || N4.length > 0 || CRN4.length >0 || T4.length >0) && 
+          (S4.length <1 || P4.length <1 || N4.length <1 || CRN4.length <1 || T4.length <1)){
+            alert("You must complete all fields for the 4th proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S5.length >0 || P5.length >0 || N5.length > 0 || CRN5.length >0 || T5.length >0) && 
+          (S5.length <1 || P5.length <1 || N5.length <1 || CRN5.length <1 || T5.length <1)){
+            alert("You must complete all fields for the 5th proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S6.length >0 || P6.length >0 || N6.length > 0 || CRN6.length >0 || T6.length >0) && 
+          (S6.length <1 || P6.length <1 || N6.length <1 || CRN6.length <1 || T6.length <1)){
+            alert("You must complete all fields for the 6th proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S7.length >0 || P7.length >0 || N7.length > 0 || CRN7.length >0 || T7.length >0) && 
+          (S7.length <1 || P7.length <1 || N7.length <1 || CRN7.length <1 || T7.length <1)){
+            alert("You must complete all fields for the 7th proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+        if((S8.length >0 || P8.length >0 || N8.length > 0 || CRN8.length >0 || T8.length >0) && 
+          (S8.length <1 || P8.length <1 || N8.length <1 || CRN8.length <1 || T8.length <1)){
+            alert("You must complete all fields for the 8th proposed class. If you have" +
+            " no additional classes, please delete the remaining fields.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</html>

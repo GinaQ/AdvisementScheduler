@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/scheduler">Schedule</a>
+        <a class="nav-link" href="/meetings">Meetings</a>
+        <a class="nav-link" href="/allStudents">Student Accounts</a>
+    </nav>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-heigth">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Welcome, Dr. Sung</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <a class="nav-link " href="/scheduler">Create/Update My Advisement Schedule</a>
+                        <a class="nav-link " href="/meetings">View Scheduled Advisement Meetings   </a>
+                        <a class="nav-link " href="/allStudents">Browse Student Accounts</a>
+                        <a class="nav-link " href="/logout">Log Out</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %>               
+</h:body>   
+</html>

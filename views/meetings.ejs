@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/scheduler">Schedule</a>
+        <a class="nav-link active" href="/meetings">Meetings</a>
+        <a class="nav-link" href="/allStudents">Student Accounts</a>    
+    </nav>
+    <div >
+        <br><h3 class="h3">My Advisement Schedule</h3><br><br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Meeting Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Major</th>
+                    <th scope="col">Meeting Status</th>
+                    <th scope="col">View</th>
+                </tr>
+            </thead>
+            <tbody>                      
+                <% for (const schedule of results) { %>
+                    <tr>
+                        <td><%= schedule.start_date.toLocaleString("en-US") %></td>
+                        <td><%= schedule.adv_status %></td>
+                        <% for (const student of students) { %>
+                            <% if (student._id == schedule.student) { %>
+                            <td><%= student.firstname%> <%=student.lastname %></td>
+                            <td><%= student.major %></td>
+                            <td>
+                                <form action="/advHistory" method="get">
+                                    <input type="hidden" name="scheduleid" id="scheduleid" value='<%= schedule._id %>'>
+                                    <input type="hidden" name="studentid" id="studentid" value="<%= student._id %>">
+                                    <button type="submit" class="btn btn-primary">View</button>
+                                </form>
+                            </td>
+                        <% }} %>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>         
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</h:body>   
+</html>

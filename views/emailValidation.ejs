@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-flid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div><a class="nav-link" href="/">Advisement Home</a></div>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>    
+                    <h3 class="h3">Validate Email Address</h3>
+                    <p>Enter your <b>UCO</b> email address. A confirmation code will be sent to the email address provided. 
+                        Click on the link in that email to create your account.</p><br>
+                    <div class='col-md-8'>
+                    <form name="emailValidation" action="/emailValidation" method="post" onsubmit="return validateForm()">
+                        <div class="form-group row">
+                            <label for="email" class='col-md-2 col-form-label'>Email</label>
+                            <div class='col-sm-6'>
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Enter UCO Email" autofocus>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Get Code</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %>                
+</h:body>
+<script>
+    function validateForm() {
+        const email = document.forms["emailValidation"]["email"].value;
+            // if (email.indexOf('uco.edu') < 0) {
+            //     alert("Use UCO Email only");
+            //     //return false;
+            //     return true; //No longer have a uco email
+            // }
+        return true;
+    }
+</script>
+</html>

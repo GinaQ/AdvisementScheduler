@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/scheduler">Schedule</a>
+        <a class="nav-link" href="/meetings">Meetings</a>
+        <a class="nav-link active" href="/allStudents">Student Accounts</a>
+    </nav>
+    <div>
+        <br><h3 class="h3">Student Accounts</h3><br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Major</th>
+                    <th scope="col">Advisement Status</th>
+                    <th scope="col">View</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const student of results) { %>
+                    <tr>
+                        <td><%= student.lastname %></td>
+                        <td><%= student.firstname %></td>
+                        <td><%= student.major %></td>
+                        <td><%= student.advstatus %></td>
+                        <td>
+                            <form action="/studentInfo" method="get">
+                                <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                                <button type="submit" class="btn btn-primary">View</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/edit" method="post">
+                                <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/remove" method="get">
+                                <input type="hidden" name="id" id="id" value="<%= student._id %>">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+              
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</h:body>   
+</html>

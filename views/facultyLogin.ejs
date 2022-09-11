@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <a class="nav-link" href="/">Advisement Home</a>
+            <a class="nav-link" href="/emailValidation">Register</a>
+            <span class="icon-bar"></span>
+        </div>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2><br>
+                    <% if (messagesuccess.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                        <%= messagesuccess %>
+                        </div>
+                    <% } %>
+                    <% if (messageerror.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                        Login Error: <%= messageerror %>
+                        </div>
+                    <% } %>
+                    <p><h4 class="h4">Faculty Login</h4></p><br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='col-md-6'>
+                    <form name='loginform' action='/facultyLogin' method='post' onsubmit='return validateForm()'>
+                        <div class='form-group row'>
+                            <label for='email' class="col-md-2 col-form-label">Email:</label>
+                            <div class="col-sm-10">
+                            <input type='text' name='email' class='form-control' id='email' placeholder='Enter email' autofocus>
+                            </div>
+                        </div>
+                        <div class='form-group row'>
+                            <label for='password' class="col-md-2 col-form-label">Password:</label>
+                            <div class="col-sm-10">
+                            <input type='password' name='password' class='form-control' id='password' placeholder='Password'>
+                            </div>
+                        </div>
+                        <button type='submit' class='btn btn-primary'>Login</button>
+                    </form>
+                    </div>
+                    <br><p><a class="nav-link" href='/forgot'>Forgot Password?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</body>
+<script>
+    function validateForm() {
+            const email = document.forms["loginform"]["email"].value;
+            const password = document.forms["loginform"]["password"].value;
+            if (password == "" || password.length < 4) {
+                alert("Password must have at least 4 chars");
+                return false;
+            }
+            return true;
+        }
+</script>
+</html>

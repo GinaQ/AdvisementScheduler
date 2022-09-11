@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<h:body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+            <% if (req.isAuthenticated()) { %>
+                <a class="nav-link" href="/">Advisement Home</a>
+                <a class="nav-link active" href="/logout">Logout</a>
+            <% } else { %>
+                <a class="nav-link" href="/login">Login</a>
+            <% } %>
+        </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link" href="/studentAccount">My Account<My Account></a>
+        <% if (user.student) { %>
+            <% if (!(student.advstatus == "Complete" || student.advstatus == "Scheduled")) {%>
+                <a class="nav-link" href="/advschedule">New Advisement</a>
+            <% } %>
+        <% } %>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-heigth">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <br><h3 class="h3">Update Account Info</h3>
+                        <% if (message & message.length > 0) { %>
+                            <div class="alert alert-info" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+                        <br><br><br>
+                        <div class='col-md-8'>
+                        <form name="studentinfoform" action="/editStudentAccount" method="post" onsubmit="return validateForm()">
+                            <input type="hidden" name="email" value="<%= user.email %>">
+                            <div class="form-group row">
+                                <label for="ucoid" class="col-sm-2 col-form-label">UCO ID</label>
+                                <div class="col-sm-4">
+                                    <input type="ucoid" name = "ucoid" class="form-control" id="ucoid" value='<%= user.student ? student.ucoid : '' %>' autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="firstname" class="col-sm-2 col-form-label">First Name</label>
+                                <div class="col-sm-4">
+                                    <input type="firstname" name="firstname" class="form-control" id="firstname" value='<%= user.student ? student.firstname : '' %>'>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="lastname" class="col-sm-2 col-form-label">Last Name</label>
+                                <div class="col-sm-4">
+                                    <input type="lastname" name="lastname" class="form-control" id="lastname" value='<%= user.student ? student.lastname : '' %>'>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                                <div class="col-sm-4">
+                                    <input type="phone" name="phone" class="form-control" id="phone" value='<%= user.student ? student.phone : '' %>'>
+                                </div>
+                            </div>     
+                            <div class="form-group row">
+                            <label for="major" class="col-sm-2 col-form-label">Major</label>
+                                <div class="col-sm-4">
+                                    <select type="major" name="major" class="form-control" id="major" value='<%= user.student ? student.major : '' %>'>
+                                        <option><%= user.student ? student.major : '' %></option>
+                                        <option>Computer Science</option>
+                                        <option>Computer Science - Applied</option> 
+                                        <option>Computer Science - Information Science</option>
+                                        <option>Software Engineering</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Account</button>
+                        </form>                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %>                  
+</h:body>
+<script>
+    function validateForm() {
+        const ucoid = document.forms["studentinfoform"]["ucoid"].value;
+            if (ucoid =='') {
+                alert("UCO ID not entered");
+                return false;
+            }
+        const firstname = document.forms["studentinfoform"]["firstname"].value;
+        if (firstname == '') {
+            alert("First name not entered");
+            return false;
+        }
+        const lastname = document.forms["studentinfoform"]["lastname"].value;
+        if (lastname == '') {
+            alert("Last name not entered");
+            return false;
+        }
+        const phone = document.forms["studentinfoform"]["phone"].value;
+        
+        if (!phone.match(/^\(?\d{3}\)?[.\s-]?\d{3}[.\s-]\d{4}$/)) {
+            alert("Phone has incorrect format. Use 000-000-0000 format (with dashes)");
+            return false;
+        }
+        const major = document.forms["studentinfoform"]["major"].value;
+        if (major == '') {
+            alert("Major not entered");
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>

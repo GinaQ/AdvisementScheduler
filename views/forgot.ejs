@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en' >
+<%- include('./partials/header') %>
+<head><title>Advisement</title></head>
+
+<body>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="navbar-header">
+            <br>
+            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+            <span class="icon-bar"></span>
+        </div>
+        <div>
+    </nav>
+    </div>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-heigth">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Advisement</h2><br>
+                    <% if (messageerror && messageerror.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            Sign Up Error: <%= messageerror %>
+                        </div>
+                    <% } %>
+                    <% if (messagesuccess && messagesuccess.length > 0) { %>
+                        <div class="alert alert-success" role="alert">
+                            <%= messagesuccess %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+                <form name='forgotPassword' action='/forgot' method='post' >
+                    <div class='form-group row'>
+                        <label for='email' class="col-md-2 col-form-label">UCO Email:</label>
+                        <div class="col-sm-10">
+                        <input type='email' name='email' class='form-control' id='email' autofocus>
+                        </div>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Reset Password</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</body>
+</html>

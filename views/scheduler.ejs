@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/header') %>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Advisement</title>
+</head>
+    <script src="codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="codebase/dhtmlxscheduler_contrast_white.css" type="text/css" charset="utf-8">
+<style type="text/css" media>
+    html, body{ 
+        margin:0px;
+        padding:0px;    
+        height:100%;
+        overflow:hidden;
+    }
+</style>
+<script type="text/javascript" charset="utf-8">
+	function init() {
+        scheduler.config.xml_date="%Y-%m-%d %H:%i";
+        scheduler.config.api_date = "%m/%d/%Y %g:%i %a";
+        scheduler.xy.bar_height = 10;
+        scheduler.xy.min_event_height = 20;
+        scheduler.config.max_month_events = 6;
+		scheduler.config.details_on_create=true;
+		scheduler.config.details_on_dblclick=true;
+		scheduler.config.multi_day = false;
+        scheduler.config.start_on_monday = false;
+        scheduler.config.time_step = 10;
+        scheduler.config.first_hour = 0800;
+        scheduler.config.last_hour = 1900;
+        scheduler.config.wide_form = true;
+        scheduler.config.event_duration = 10; //specify event duration in munites for auto end time
+        scheduler.config.auto_end_date = true;
+        scheduler.init('scheduler_here', null,"month");
+        scheduler.templates.time_picker = scheduler.date.date_to_str("%g :%i %a");
+        scheduler.templates.xml_date = function(value){ return new Date(value); };
+		scheduler.load("/data", "json");
+
+		var dp = new dataProcessor("/data");
+		dp.init(scheduler);
+	}
+</script>
+
+
+<body onload='init();'>
+    <div class="container-fluid">
+    <nav class="navbar navbar-fixed-top navbar-default">
+            <div class="navbar-header">
+                <br>
+                <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
+                <span class="icon-bar"></span>
+            </div>
+            <div>
+                <% if (req.isAuthenticated()) { %>
+                    <a class="nav-link" href="/">Advisement Home</a>
+                    <a class="nav-link" href="/facultyAdvHome">My Home</a>
+                    <a class="nav-link active" href="/logout">Logout</a>
+                <% } else { %>
+                    <a class="nav-link" href="/login">Login</a>
+                <% } %>
+            </div>
+    </nav>
+    </div>
+    <nav class="nav nav-tabs nav-justified">
+        <a class="nav-link active" href="/scheduler">Schedule</a>
+        <a class="nav-link" href="/meetings">Meetings</a>
+        <a class="nav-link" href="/allStudents">Student Accounts</a>
+    </nav>
+    <div class="container-fluid width-c">
+        <div id="content" class="center_content full-height">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h2 class="h2">Published Time Slots</h2><br>
+                    <% if (message && message.length > 0) { %>
+                        <div class="alert alert-info" role="alert">
+                            <%= message %>
+                        </div>
+                    <% } %>
+                    <p>Add multiple time slots <a href="/multipleevents">HERE</a></p>
+                    <p>Or click on a date below to ADD, VIEW, or DELETE published schedule</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="scheduler_here" class="dhx_cal_container" style='width:80%; height:50%; '>
+        <div class="dhx_cal_navline">
+            <div class="dhx_cal_prev_button ">&nbsp;</div>
+            <div class="dhx_cal_next_button">&nbsp;</div>
+            <div class="dhx_cal_today_button"></div>
+            <div class="dhx_cal_date "></div>
+        </div>
+        <div class="dhx_cal_header">
+        </div>
+        <div class="dhx_cal_data">
+        </div>
+    </div>  
+    
+
+    <%- include ('./partials/footer') %>
+    <%- include ('./partials/scripts') %> 
+</body>
+</html>
