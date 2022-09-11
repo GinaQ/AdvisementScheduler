@@ -1,37 +1,35 @@
-<h1>README</h1>
+# AdvisementScheduler
+Web Advisement Meeting Scheduler for Faculty and Students
 
-<h2>Pre-requisites</h2>
-Install MongoDB Community Edition
-   - Uncheck "as a service"
-   - Change install location to D: drive
-   - Ok to install Mongo DB Compass
-   - Add bin path to environment variables  (D:\Program Files\MongoDB\6.0\bin )
-
-Install Mongo Shell (mongosh)
-   - Change install location to D: drive
-   - Add bin path to environment variables
-
-
+#Pre-requisites
+##Install MongoDB Community Edition
+  <li>Uncheck "as a service"</li>
+  <li> Change install location to D: drive</li>
+  <li> Ok to install Mongo DB Compass</li>
+  <li> Add bin path to environment variables  (D:\Program Files\MongoDB\6.0\bin )</li>
+<br>
+##Install Mongo Shell (mongosh)
+   <li> Change install location to D: drive</li>
+   <li> Add bin path to environment variables</li>
+<br>
 Create a folder for MongoData to be stored.
 
-
-<h2>Creating the first database</h2>
-
-Start MongoDB: 
+#Creating the first database
+##Start MongoDB
 From command line at MongoData folder location:  mongod --port 27017 --dbpath .\MongoData
 
 Leave this command window open. 
 
-Start the Mongo Shell:
+#Start the Mongo Shell:
 Start a new command window instance.
 : mongosh --port 27017
 
+#Setting up Access Control
+##Create the User Admin
 
-Setting up Access Control
-Create the User Admin:
-
-> use admin
-> db.createUser(
+<code>
+use admin
+db.createUser(
   {
     user: "userAdmin",
     pwd: "password", 
@@ -41,10 +39,12 @@ Create the User Admin:
     ]
   }
 )
+</code>
 
-Create the DB Admin:
-> use admin
-> db.createUser(
+#Create the DB Admin
+<code>
+use admin
+db.createUser(
   {
     user: "dbAdmin",
     pwd: "password", 
@@ -55,8 +55,10 @@ Create the DB Admin:
     ]
   }
 )
+</code>
 
-Create wspdb database and add wsp user:
+##Create wspdb database and add wsp user
+<code>
 use wspdb
 db.createUser(
   {
@@ -68,12 +70,14 @@ db.createUser(
     ]
   }
 )
+</code>
 
 *Note: create your users here at this step; while in -auth, you will not be able to do so.
 
-<h2>Restart the MongoDB with access control </h2>
+#Restart the MongoDB with access control
 
-Shutdown current instance: > db.adminCommand( { shutdown: 1 } )
+Shutdown current instance: 
+<code>db.adminCommand( { shutdown: 1 } ) </code>
 Exit the command line: > exit
 
 Start it again with access control (in the first command window instance): 
@@ -82,26 +86,24 @@ Leave this window open.
 
 From second command prompt instance:
 Connect and Authenticate as the User Admin:
-mongosh --port 27017  --authenticationDatabase "admin" -u "userAdmin" -p
+<code>mongosh --port 27017  --authenticationDatabase "admin" -u "userAdmin" -p</code>
 Enter password when prompted
-
+<code>
 : use wspdb
 : db.auth("wsp", "password")
+</code>
 
-<h2>Create Ehtereal Account for fake emails</h2>
+#Create Ehtereal Account for fake emails
 https://ethereal.email/
 In app.js within app.post('/emailValidation'...) replace the user: and pass: with the newly created 
 ethereal email username and password. 
 
-<h2>Run Program</h2>
+#Run Program
 I used VS Code Editor. Open terminal.
-
+<code>
 > npm install dependencies
 > npm run start
+</code>
 
 Use browser to go to localhost:3000
-
-
-
-
 
