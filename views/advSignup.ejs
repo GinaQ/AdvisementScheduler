@@ -8,8 +8,9 @@
     <nav class="navbar navbar-fixed-top navbar-default">
         <div class="navbar-header">
             <br>
-            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
-            <span class="icon-bar"></span>
+            <span class="icon-bar">
+                <img style="max-height:200px; text-align:center; display:block;margin-top: -9px" src="images/abc_college_logo.png" alt="">
+            </span>
         </div>
         <div>
             <% if (req.isAuthenticated()) { %>
@@ -34,7 +35,7 @@
             <br><h4><%= user.student? student.firstname : '' %> <%=user.student? student.lastname : '' %></h4>
             <p><b>Email: </b><%= user.email %></p>
             <p><b>Phone: </b><%= student.phone %></p>
-            <p><b>UCO ID: </b><%= student.ucoid %></p>
+            <p><b>ABC ID: </b><%= student.abcid %></p>
     </div>
     <div class="container-fluid">
         <form name="advSignup" action="/advCompleteSignup" method="post" onsubmit='return validateForm()'>
@@ -70,7 +71,7 @@
                 </div>
                 <div class="col">
                     <p><b>Type of Meeting: </b></p>
-                    Would you like to meet in person, or via Skype? Dr. Sung's Skype ID: profsung@hotmail.com. Dr. Sung will start Skype.
+                    Would you like to meet in person, or via Skype? Dr. Smith's Skype ID: smith@email.com. Dr. Smith will start Skype.
                     <div class="radio">
                         <label>
                             <input type="radio" name="skypeRadio" id="inperson" value="inperson" checked>

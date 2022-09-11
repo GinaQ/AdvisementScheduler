@@ -8,8 +8,9 @@
     <nav class="navbar navbar-fixed-top navbar-default">
         <div class="navbar-header">
             <br>
-            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
-            <span class="icon-bar"></span>
+            <span class="icon-bar">
+                <img style="max-height:200px; text-align:center; display:block;margin-top: -9px" src="images/abc_college_logo.png" alt="">
+            </span>
         </div>
         <div>
             <% if (req.isAuthenticated()) { %>
@@ -55,9 +56,9 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="ucoid" class="col-sm-2 col-form-label">UCO ID</label>
+                                <label for="abcid" class="col-sm-2 col-form-label">ABC ID</label>
                                 <div class="col-sm-4">
-                                    <input type="ucoid" name = "ucoid" class="form-control" id="ucoid" value='<%= student.ucoid  %>'>
+                                    <input type="abcid" name = "abcid" class="form-control" id="abcid" value='<%= student.abcid  %>'>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -102,9 +103,9 @@
 </h:body>
 <script>
     function validateForm() {
-        const ucoid = document.forms["studentinfoform"]["ucoid"].value;
-            if (ucoid =='') {
-                alert("UCO ID not entered");
+        const abcid = document.forms["studentinfoform"]["abcid"].value;
+            if (abcid =='') {
+                alert("ABC ID not entered");
                 return false;
             }
         const firstname = document.forms["studentinfoform"]["firstname"].value;

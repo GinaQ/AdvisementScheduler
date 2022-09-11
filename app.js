@@ -92,7 +92,7 @@ app.post('/emailValidation',(req, res, next) => {
         const mailOptions = {
           to: req.body.email,
           from: 'newaccounts@demo.com',
-          subject: 'UCO Advisement Email Validation',
+          subject: 'ABC Advisement Email Validation',
           text: 'You are receiving this because you have requested to create an advisement account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
             'http://' + req.headers.host + '/signup/' + token + '/' +  email + '\n\n' +
@@ -345,7 +345,7 @@ app.post('/editStudentInfo', (req, res, next)=> {
         if (err) return err;
         if (!student) return next();      
         stuuser.email = req.body.email;
-        student.ucoid = req.body.ucoid;
+        student.abcid = req.body.abcid;
         student.firstname = req.body.firstname;
         student.lastname = req.body.lastname;
         student.phone = req.body.phone;
@@ -447,7 +447,7 @@ app.post('/forgot', (req, res, next) => {
         const mailOptions = {
           to: user.email,
           from: 'passwordreset@demo.com',
-          subject: 'UCO Password Reset',
+          subject: 'ABC Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
             'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -576,7 +576,7 @@ app.post('/editStudentAccount', (req, res, next)=> {
   const message = req.flash('info');
   if (!req.user.student){
     const student = new Student();
-    student.ucoid = req.body.ucoid;
+    student.abcid = req.body.abcid;
     student.firstname = req.body.firstname;
     student.lastname = req.body.lastname;
     student.phone = req.body.phone;
@@ -589,7 +589,7 @@ app.post('/editStudentAccount', (req, res, next)=> {
     Student.findOne({'_id': req.user.student}, (err, student) => {
       if (err) return err;
       if (!student) return next();
-      student.ucoid = req.body.ucoid;
+      student.abcid = req.body.abcid;
       student.firstname = req.body.firstname;
       student.lastname = req.body.lastname;
       student.phone = req.body.phone;

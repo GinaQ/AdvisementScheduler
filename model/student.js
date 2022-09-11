@@ -4,8 +4,8 @@ mongoose.Promise = global.Promise;
 
 // Child Schema
 const studentSchema = mongoose.Schema({
-    ucoid: {
-        type: Number, required: [true, 'UCO ID required'], unique: false
+    abcid: {
+        type: Number, required: [true, 'ABC ID required'], unique: false
     },
     firstname: {
         type: String, required: [true, 'First name required']

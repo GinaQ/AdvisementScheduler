@@ -8,8 +8,9 @@
     <nav class="navbar navbar-fixed-top navbar-default">
         <div class="navbar-header">
             <br>
-            <img style="max-height:100px; margin-top: -9px" src="images/uco-logo-wide-white.png" alt="">
-            <span class="icon-bar"></span>
+            <span class="icon-bar">
+                <img style="max-height:200px; text-align:center; display:block;margin-top: -9px" src="images/abc_college_logo.png" alt="">
+            </span>
         </div>
         <div>
             <% if (req.isAuthenticated()) { %>
@@ -34,7 +35,7 @@
                 <%= schedule.start_date%></h4>
         <p><b>Email: </b><%= user.email %></p>
         <p><b>Phone: </b><%= student.phone %></p>
-        <p><b>UCO ID: </b><%= student.ucoid %></p>
+        <p><b>ABC ID: </b><%= student.abcid %></p>
         <p><b>Major: </b><%= student.major %></p>
         <p><b>Pre-Advisement Questions: </b><%= schedule.questions %></p>
         <p><b>Proposed Courses: </b></p>
